@@ -25,6 +25,19 @@
             padding: 0 1mm;
             width: 56mm;
         }
+        
+        /*------ LOGO (AÑADIDO) ------*/
+        .svg-container {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 5mm;
+        }
+        #logo {
+            max-width: 80%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
 
         /*------ INFORMACIÓN GENERAL DEL TICKET ------*/
         .ticket-header, .ticket-footer, .totals-section, .items-section {
@@ -150,7 +163,7 @@
             return "$" + number.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         }
     </script>
-
+    
     <!-- Contenedor del SVG (Logo) -->
     <div class="svg-container">
         <!-- SVG con viewBox y fills modificados -->
@@ -185,7 +198,7 @@
         </svg>
     </div>
 
-    
+
     <!-- Encabezado del Ticket -->
     <div class="ticket-header">
         <h2>** TRASLADO DE MERCANCÍA **</h2>
