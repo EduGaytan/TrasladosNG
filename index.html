@@ -1,1 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=58mm, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Ticket de Traslado</title>
 
+    <style>
+        /*------ RESETEO BÁSICO Y PÁGINA ------*/
+        * {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            color: #000;
+            font-weight: bold;
+        }
+
+        @page {
+            margin: 2mm 0 0 0;
+            size: 58mm auto;
+        }
+
+        body {
+            margin: 0;
+            padding: 0 1mm;
+            width: 56mm;
+        }
+
+        /*------ INFORMACIÓN GENERAL DEL TICKET ------*/
+        .ticket-header, .ticket-footer, .totals-section, .items-section {
+            text-align: center;
+            margin-bottom: 3mm;
+        }
+
+        .ticket-header p {
+            margin: 1mm 0;
+            line-height: 1.2;
+        }
+
+        .info-line {
+            display: flex;
+            justify-content: space-between;
+            margin: 1mm 0;
+            padding: 0 2mm;
+        }
+
+        .info-line .label {
+            font-weight: bold;
+            text-align: left;
+            padding-right: 5px;
+        }
+
+        .info-line .value {
+            text-align: right;
+        }
+
+        /*------ TABLA DE ARTÍCULOS ------*/
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 3mm;
+            margin-bottom: 3mm;
+        }
+
+        .items-table th, .items-table td {
+            border: none;
+            padding: 1mm 0.5mm;
+            vertical-align: top;
+        }
+
+        .items-table thead th {
+            font-weight: bold;
+            border-bottom: 1px dashed #000;
+            padding-bottom: 1.5mm;
+            text-align: right;
+        }
+
+        /* Ajuste de anchos y alineación por columna */
+        .items-table th.col-desc, .items-table td.col-desc {
+            width: 65%;
+            text-align: left;
+        }
+        .items-table th.col-qty, .items-table td.col-qty {
+            width: 10%;
+            text-align: center;
+        }
+         .items-table th.col-price, .items-table td.col-price {
+            width: 25%;
+        }
+        .items-table tbody td {
+             padding-top: 1mm;
+        }
+
+        /*------ SEPARADOR ------*/
+        .separator {
+            border-top: 1px dashed #000;
+            margin: 3mm 0;
+        }
+
+        /*------ SECCIÓN DE FIRMA Y TOTALES FINALES ------*/
+        .final-section {
+            margin-top: 5mm;
+            text-align: left;
+            padding: 0 2mm;
+        }
+
+        .final-section p {
+            margin: 2mm 0;
+            font-size: 14px;
+        }
+
+        .signature-line {
+            margin-top: 10mm;
+            text-align: center;
+        }
+
+    </style>
+</head>
+
+<body>
+    <script>
+        // --- Extraer parámetros de la URL ---
+        const params = new URLSearchParams(window.location.search);
+        const FechaHora = params.get('FechaHora') || " ";
+        const Desde = params.get('Desde') || " ";
+        const Hacia = params.get('Hacia') || " ";
+        const Cantidad_Total = params.get('Cantidad_Total') || "0";
+        const Monto_Total = params.get('Monto_Total') || "0";
+
+        // Obtener y procesar los arrays
+        const Titulos = (params.get('Titulo') || "").split(',');
+        const Cantidades = (params.get('Cantidad') || "").split(',');
+        const Precios = (params.get('Precio') || "").split(',');
+
+        // --- Combinar los datos de los productos ---
+        var result = [];
+        Titulos.forEach((titulo, id) => {
+            if (titulo && Cantidades[id] && Precios[id]) {
+                result.push({
+                    Titulo: titulo,
+                    Cantidad: Cantidades[id],
+                    Precio: formatCurrency(parseFloat(Precios[id]))
+                });
+            }
+        });
+
+        // --- Función para formatear a moneda ---
+        function formatCurrency(number) {
+             if (isNaN(number)) return "$0.00";
+            return "$" + number.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+    </script>
+
+    <!-- Encabezado del Ticket -->
+    <div class="ticket-header">
+        <h2>** TRASLADO DE MERCANCÍA **</h2>
+    </div>
+
+    <!-- Información del Traslado -->
+    <div class="info-line">
+        <span class="label">Fecha:</span>
+        <span class="value" id="FechaHora_id"></span>
+    </div>
+    <div class="info-line">
+        <span class="label">Desde:</span>
+        <span class="value" id="Desde_id"></span>
+    </div>
+    <div class="info-line">
+        <span class="label">Hacia:</span>
+        <span class="value" id="Hacia_id"></span>
+    </div>
+
+    <!-- Separador -->
+    <div class="separator"></div>
+
+    <!-- Detalles de la mercancía (Tabla de artículos) -->
+    <div class="items-section">
+        <table class="items-table">
+            <thead>
+                <tr>
+                    <th class="col-desc">Descripción</th>
+                    <th class="col-qty">Cant</th>
+                    <th class="col-price">P.U.</th>
+                </tr>
+            </thead>
+            <tbody id="tablaBody">
+                <!-- Las filas de los artículos se insertarán aquí por JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Separador -->
+    <div class="separator"></div>
+
+    <!-- Sección de Totales y Firma -->
+    <div class="final-section">
+        <p><strong>Cantidad de piezas:</strong> <span id="Cantidad_Total_id"></span></p>
+        <p><strong>Valor Total de mercancía:</strong> <span id="Monto_Total_id"></span></p>
+        
+        <div class="signature-line">
+            <p>Firma de recibido:</p>
+            <p>_________________________</p>
+        </div>
+    </div>
+
+    <!-- Scripts para poblar datos y para imprimir -->
+    <script>
+        // --- Poblar los elementos HTML con los datos ---
+        document.getElementById("FechaHora_id").textContent = decodeURIComponent(FechaHora);
+        document.getElementById("Desde_id").textContent = decodeURIComponent(Desde);
+        document.getElementById("Hacia_id").textContent = decodeURIComponent(Hacia);
+
+        const tablaBody = document.getElementById("tablaBody");
+        result.forEach(function(row) {
+            const newRow = document.createElement("tr");
+            newRow.innerHTML = `
+                <td class="col-desc">${decodeURIComponent(row.Titulo)}</td>
+                <td class="col-qty">${row.Cantidad}</td>
+                <td class="col-price">${row.Precio}</td>
+            `;
+            tablaBody.appendChild(newRow);
+        });
+
+        document.getElementById("Cantidad_Total_id").textContent = Cantidad_Total;
+        document.getElementById("Monto_Total_id").textContent = formatCurrency(parseFloat(Monto_Total));
+
+        // --- Script de impresión y cierre automático ---
+        window.onload = function() {
+            setTimeout(function() {
+                window.print();
+                setTimeout(function() {
+                    window.close();
+                }, 1000); // Espera 1 segundo antes de intentar cerrar
+            }, 500); // Espera medio segundo para que todo cargue antes de imprimir
+        }
+    </script>
+
+</body>
+</html>
