@@ -7,126 +7,47 @@
 
     <style>
         /* --- CONFIGURACIÓN DE PÁGINA --- */
-        @page {
-            margin: 0;
-            size: 58mm auto;
-        }
-        body {
-            margin: 0;
-            padding: 2mm 0 2mm 1mm; 
-            width: 58mm;
-            background-color: #fff;
-        }
-        .ticket-container {
-            width: 48mm; 
-            text-align: left;
-        }
+        @page { margin: 0; size: 58mm auto; }
+        body { margin: 0; padding: 2mm 0 2mm 1mm; width: 58mm; background-color: #fff; }
+        .ticket-container { width: 48mm; text-align: left; }
 
         /* --- TIPOGRAFÍA --- */
-        * {
-            font-family: Arial, Helvetica, sans-serif; 
-            font-size: 12px;
-            color: #000;
-            box-sizing: border-box;
-            font-weight: 600;
-            line-height: 1.15;
-        }
+        * { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000; box-sizing: border-box; font-weight: 600; line-height: 1.15; }
 
-        /* --- LOGO --- */
-        .svg-container {
-            width: 100%;
-            text-align: center;
-            margin-bottom: 2mm;
-        }
-        #logo {
-            max-width: 95%;
-            height: auto;
-        }
+        /* --- LOGO Y ENCABEZADO --- */
+        .svg-container { width: 100%; text-align: center; margin-bottom: 2mm; }
+        #logo { max-width: 95%; height: auto; }
+        .ticket-header { text-align: center; margin-bottom: 3mm; }
+        .business-name { font-size: 16px !important; font-weight: 900 !important; text-transform: uppercase; display: block; margin-bottom: 2px; }
+        .ticket-header p { font-size: 11px; margin: 1px 0; }
+        .main-title { font-size: 14px !important; font-weight: 800; text-transform: uppercase; text-align: center; margin: 3mm 0; }
 
-        /* --- TÍTULO PRINCIPAL --- */
-        .main-title {
-            font-size: 16px !important;
-            font-weight: 900 !important;
-            text-transform: uppercase;
-            text-align: center;
-            margin-bottom: 3mm;
-        }
-        
-        /* --- INFO TICKET (Fecha, Origen, Destino) --- */
-        .info-line {
-            display: flex;
-            justify-content: space-between;
-            margin: 1px 0;
-        }
-        .info-line span {
-            font-size: 12px;
-        }
+        /* --- INFO TICKET --- */
+        .info-line { display: flex; justify-content: space-between; margin: 1px 0; }
+        .info-line span { font-size: 12px; }
 
         /* --- TABLA DE ARTÍCULOS --- */
-        .items-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 2mm 0;
-        }
-        .items-table th {
-            border-bottom: 1px dashed #000;
-            text-align: right;
-            padding-bottom: 1mm;
-            font-size: 11px;
-        }
-        
-        /* Ajuste de columnas (sin subtotal) */
-        .col-desc { text-align: left; width: 60%; }
-        .col-qty  { text-align: center; width: 15%; }
-        .col-price { text-align: right; width: 25%; }
-
-        .items-table td {
-            padding: 2px 0;
-            vertical-align: top;
-            font-size: 12px;
-            word-wrap: break-word;
-        }
+        .items-table { width: 100%; border-collapse: collapse; margin: 2mm 0; }
+        .items-table th { border-bottom: 1px dashed #000; text-align: right; padding-bottom: 1mm; font-size: 11px; }
+        .col-desc { text-align: left; width: 40%; }
+        .col-qty  { text-align: center; width: 10%; }
+        .col-price { text-align: right; width: 23%; }
+        .col-subtotal { text-align: right; width: 27%; }
+        .items-table td { padding: 2px 0; vertical-align: top; font-size: 12px; word-wrap: break-word; }
 
         /* --- SEPARADOR --- */
-        .separator {
-            border-top: 1px dashed #000;
-            margin: 2mm 0;
-        }
+        .separator { border-top: 1px dashed #000; margin: 2mm 0; }
 
         /* --- RESUMEN FINAL Y FIRMA --- */
-        .final-summary p {
-            display: flex;
-            justify-content: space-between;
-            margin: 2px 0;
-            font-size: 13px;
-        }
-        .final-summary p span:first-child {
-            text-align: right;
-            padding-right: 4px;
-        }
-        .final-summary p span:last-child {
-            text-align: right;
-        }
+        .final-summary p { display: flex; justify-content: space-between; margin: 2px 0; font-size: 13px; }
+        .final-summary p span:first-child { text-align: right; padding-right: 4px; }
         .text-lg { font-size: 14px !important; font-weight: 800; }
-
-        .signature-section {
-            margin-top: 8mm;
-            text-align: center;
-        }
-        .signature-section p {
-            margin: 1px 0;
-            font-size: 12px;
-        }
-
-        /* --- PIE DE PÁGINA --- */
-        .ticket-footer {
-            text-align: center;
-            margin-top: 5mm;
-        }
-        .ticket-footer p {
-            font-size: 11px;
-            margin: 2px 0;
-        }
+        .signature-section { margin-top: 8mm; text-align: center; }
+        .signature-section p { margin: 1px 0; font-size: 12px; }
+        
+        /* --- CÓDIGO DE BARRAS --- */
+        .barcode-container { text-align: center; margin-top: 5mm; }
+        .barcode-container img { max-width: 100%; height: auto; }
     </style>
 </head>
 
@@ -139,21 +60,33 @@
             </svg>
         </div>
 
-        <!-- TÍTULO -->
-        <div class="main-title">
-            Traslado de Mercancía
+        <!-- ENCABEZADO -->
+        <div class="ticket-header">
+            <span class="business-name">Novedades Gaytan</span>
+            <p>RFC: GAOE6603281X3</p>
+            <p>Av. Hidalgo #8 Moroleón, Gto.</p>
+            <p>Tel: 445 458 2720 | WhatsApp: 445 100 9780</p>
+            <p>www.novedadesgaytan.com.mx</p>
         </div>
 
-        <!-- INFO TRASLADO -->
+        <div class="main-title">
+            Comprobante de Traslado
+        </div>
+
+        <!-- INFO TICKET -->
+        <div class="info-line">
+            <span># Folio:</span>
+            <span id="Ticket_id"></span>
+        </div>
         <div class="info-line">
             <span>Fecha y Hora:</span>
             <span id="FechaHora_id"></span>
         </div>
-        <div class="info-line">
+        <div class="info-line" id="Desde_container">
             <span>Desde:</span>
             <span id="Desde_id"></span>
         </div>
-        <div class="info-line">
+        <div class="info-line" id="Hacia_container">
             <span>Hacia:</span>
             <span id="Hacia_id"></span>
         </div>
@@ -162,9 +95,10 @@
         <table class="items-table">
             <thead>
                 <tr>
-                    <th class="col-desc">Descripción</th>
-                    <th class="col-qty">Cant</th>
+                    <th class="col-desc">Desc</th>
+                    <th class="col-qty">Cnt</th>
                     <th class="col-price">P.U.</th>
+                    <th class="col-subtotal">Imp</th>
                 </tr>
             </thead>
             <tbody id="tablaBody"></tbody>
@@ -175,7 +109,7 @@
         <!-- RESUMEN FINAL -->
         <div class="final-summary">
             <p class="text-lg">
-                <span>Cantidad de Piezas:</span>
+                <span>Total de Piezas:</span>
                 <span id="Cantidad_Total_id"></span>
             </p>
             <p class="text-lg">
@@ -189,10 +123,10 @@
             <p>_________________________</p>
             <p>Firma de Recibido</p>
         </div>
-
-        <!-- PIE -->
-        <div class="ticket-footer">
-            <p>Verificar mercancía al recibir.</p>
+        
+        <!-- BARCODE -->
+        <div class="barcode-container">
+            <img id="barcodeImg" src="" alt="Barcode">
         </div>
     </div>
 
@@ -202,49 +136,67 @@
         const getP = (name, def = "") => params.has(name) ? decodeURIComponent(params.get(name)) : def;
         const money = (num) => "$" + (parseFloat(num) || 0).toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         
-        const trasladoData = {
+        const ticketData = {
+            id: getP('Ticket'),
             fecha: getP('FechaHora'),
-            desde: getP('Desde'),
-            hacia: getP('Hacia'),
-            cantidadTotal: getP('Cantidad_Total', '0'),
-            montoTotal: getP('Monto_Total', '0'),
-            titulos: getP('Titulo', '').split(','),
-            cantidades: getP('Cantidad', '').split(','),
-            precios: getP('Precio', '').split(',')
+            desde: getP('Desde'), // Preparado para recibir este parámetro
+            hacia: getP('Hacia'), // Preparado para recibir este parámetro
+            totalValor: getP('Total', '0'),
+            barcodeUrl: getP('BarCode'),
+            descripciones: getP('Descripción', '').split(" , "),
+            cantidades: getP('Qty', '').split(" , "),
+            precios: getP('PrecioDescuento', '').split(" , "),
+            subtotales: getP('SubtotalDescuento', '').split(" , ")
         };
 
         // --- 2. RENDERIZADO DE DATOS FIJOS ---
-        document.getElementById("FechaHora_id").textContent = trasladoData.fecha;
-        document.getElementById("Desde_id").textContent = trasladoData.desde;
-        document.getElementById("Hacia_id").textContent = trasladoData.hacia;
+        document.getElementById("Ticket_id").textContent = ticketData.id;
+        document.getElementById("FechaHora_id").textContent = ticketData.fecha;
+        
+        // Ocultar Desde/Hacia si no vienen en la URL
+        if(ticketData.desde) document.getElementById("Desde_id").textContent = ticketData.desde;
+        else document.getElementById("Desde_container").style.display = 'none';
+
+        if(ticketData.hacia) document.getElementById("Hacia_id").textContent = ticketData.hacia;
+        else document.getElementById("Hacia_container").style.display = 'none';
 
         // --- 3. GENERAR LISTA DE PRODUCTOS ---
         const tablaBody = document.getElementById("tablaBody");
-        trasladoData.titulos.forEach((titulo, index) => {
-            if(titulo) {
-                let cantidad = trasladoData.cantidades[index] || 1;
-                let precio = trasladoData.precios[index] || 0;
+        let totalPiezas = 0;
+
+        ticketData.descripciones.forEach((desc, index) => {
+            if(desc) {
+                let qty = parseFloat(ticketData.cantidades[index]) || 0;
+                totalPiezas += qty;
+                
                 let row = document.createElement("tr");
                 row.innerHTML = `
-                    <td class="col-desc">${titulo}</td>
-                    <td class="col-qty">${cantidad}</td>
-                    <td class="col-price">${money(precio)}</td>
+                    <td class="col-desc">${desc}</td>
+                    <td class="col-qty">${qty}</td>
+                    <td class="col-price">${money(ticketData.precios[index])}</td>
+                    <td class="col-subtotal">${money(ticketData.subtotales[index])}</td>
                 `;
                 tablaBody.appendChild(row);
             }
         });
 
-        // --- 4. RENDERIZADO DE TOTALES FINALES ---
-        document.getElementById("Cantidad_Total_id").textContent = trasladoData.cantidadTotal;
-        document.getElementById("Monto_Total_id").textContent = money(trasladoData.montoTotal);
+        // --- 4. RENDERIZADO DE TOTALES ---
+        document.getElementById("Cantidad_Total_id").textContent = totalPiezas;
+        document.getElementById("Monto_Total_id").textContent = money(ticketData.totalValor);
+        
+        // --- 5. MOSTRAR CÓDIGO DE BARRAS ---
+        const barcodeImg = document.getElementById("barcodeImg");
+        if (ticketData.barcodeUrl) {
+            barcodeImg.src = ticketData.barcodeUrl;
+        } else {
+            document.querySelector('.barcode-container').style.display = 'none';
+        }
 
-        // --- 5. IMPRIMIR Y CERRAR ---
+        // --- 6. IMPRIMIR Y CERRAR ---
         window.onload = function() {
             setTimeout(function() {
                 window.print();
-                setTimeout(function() {
-                    window.close();
-                }, 1000);
+                setTimeout(() => { window.close(); }, 1000);
             }, 500);
         }
     </script>
