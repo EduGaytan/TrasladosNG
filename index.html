@@ -130,23 +130,22 @@
         </div>
     </div>
 
-    <script>
+<script>
         // --- 1. LECTURA DE DATOS ---
         const params = new URLSearchParams(window.location.search);
         const getP = (name, def = "") => params.has(name) ? decodeURIComponent(params.get(name)) : def;
         const money = (num) => "$" + (parseFloat(num) || 0).toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         
         const ticketData = {
-            id: getP('Ticket'),
+            id: getP('Ticket', 'N/A'),
             fecha: getP('FechaHora'),
-            desde: getP('Desde'), // Preparado para recibir este parámetro
-            hacia: getP('Hacia'), // Preparado para recibir este parámetro
-            totalValor: getP('Total', '0'),
+            desde: getP('Desde'), 
+            hacia: getP('Hacia'), 
+            totalValor: getP('Monto_Total', '0'), // Corregido: AppScript enviaba "Monto_Total"
             barcodeUrl: getP('BarCode'),
-            descripciones: getP('Descripción', '').split(" , "),
-            cantidades: getP('Qty', '').split(" , "),
-            precios: getP('PrecioDescuento', '').split(" , "),
-            subtotales: getP('SubtotalDescuento', '').split(" , ")
+            descripciones: getP('Titulo', '').split(","), // Corregido: "Titulo" en vez de "Descripción"
+            cantidades: getP('Cantidad', '').split(","), // Corregido: "Cantidad" en vez de "Qty"
+            precios: getP('Precio', '').split(",") // Corregido: "Precio" en vez de "PrecioDescuento"
         };
 
         // --- 2. RENDERIZADO DE DATOS FIJOS ---
@@ -167,14 +166,16 @@
         ticketData.descripciones.forEach((desc, index) => {
             if(desc) {
                 let qty = parseFloat(ticketData.cantidades[index]) || 0;
+                let price = parseFloat(ticketData.precios[index]) || 0;
+                let subtotal = qty * price; // Se calcula automáticamente aquí
                 totalPiezas += qty;
                 
                 let row = document.createElement("tr");
                 row.innerHTML = `
                     <td class="col-desc">${desc}</td>
                     <td class="col-qty">${qty}</td>
-                    <td class="col-price">${money(ticketData.precios[index])}</td>
-                    <td class="col-subtotal">${money(ticketData.subtotales[index])}</td>
+                    <td class="col-price">${money(price)}</td>
+                    <td class="col-subtotal">${money(subtotal)}</td>
                 `;
                 tablaBody.appendChild(row);
             }
